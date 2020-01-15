@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.server.mapper.ProjectMapper">
+    <resultMap id ="BaseResultMap" type="org.server.bean.Project">
+        <id column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="project_name" property="name"/>
+        <result column="p_code" property="pCode"/>
+        <result column="principal" property="principal"/>
+        <result column="scale" property="scale"/>
+        <result column="industry" property="industry"/>
+        <result column="location" property="location"/>
+        <result column="start_Date" property="startDate"/>
+        <result column="end_Date" property="endDate"/>
+    </resultMap>
+
+    <select id="getProjectsByUsername" resultMap="BaseResultMap">
+        SELECT p.* FROM project p WHERE p.`project_name` like concat('%',#{keywords},'%') and p.eid = (SELECT id FROM enterprise e WHERE e.username = #{username}) ORDER BY p.`id`
+    </select>
+
+    <select id="getProjectsByPage" resultMap="BaseResultMap">
+        SELECT p.* FROM project p where p.`project_name` like concat('%',#{keywords},'%')
+        <if test="start!=null and size!=null">
+            order by p.id limit #{start},#{size}
+        </if>
+    </select>
+    <select id="getCountByKeywords" resultType="int">
+        select count(*) from project p where p.`project_name` like concat('%',#{keywords},'%')
+    </select>
+    <select id="getEntNameByEid" resultType="String">
+        select e.name from enterprise e where e.id=#{eid}
+    </select>
+    <insert id="addProject" parameterType="org.server.bean.Project">
+        insert into project (eid,project_name,p_code,principal,scale,industry,location,start_date,end_date)
+        values (#{project.eid,jdbcType=INTEGER},#{project.name,jdbcType=VARCHAR},#{project.pCode,jdbcType=VARCHAR},
+                #{project.principal,jdbcType=VARCHAR},#{project.scale,jdbcType=INTEGER},#{project.industry,jdbcType=VARCHAR},
+                #{project.location,jdbcType=VARCHAR},#{project.startDate,jdbcType=DATE},#{project.endDate,jdbcType=DATE})
+    </insert>
+    <delete id="deleteProjectById">
+        delete from project where id in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">#{id}</foreach>
+    </delete>
+    <delete id="deleteStageByPid">
+        delete from stage where pid in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">#{id}</foreach>
+    </delete>
+</mapper>

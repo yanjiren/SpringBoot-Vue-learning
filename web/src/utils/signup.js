@@ -10,3 +10,10 @@ export async function isExistUsername(str) {
   })
   return data;
 }
+
+export function entSignup (username,password){
+  return axios({
+    method: 'post',
+    url: "/signup/ent?username="+username+"&password="+password,
+  });
+}

@@ -1,13 +1,10 @@
 package org.server.controller;
 
 import org.server.bean.Ent;
-import org.server.bean.Project;
+import org.server.bean.RespBean;
 import org.server.service.EntService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +19,7 @@ public class EntBasicController {
     EntService entService;
 
     @RequestMapping(value = "/all/ent", method = RequestMethod.GET)
-    public Map<String, Object> getEntByPage(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "") String keywords) {
+    public Map<String, Object> getEntByPage(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String keywords) {
         Map<String, Object> map = new HashMap<>();
         List<Ent> EntByPage = entService.getEntByPage(page, size, keywords);
         int count = entService.getCountByKeywords(keywords);
@@ -32,7 +29,31 @@ public class EntBasicController {
     }
 
     @RequestMapping(value = "/basic/ent", method = RequestMethod.GET)
-    public Ent getEntBasicById(@RequestParam(defaultValue = "2") Integer id){
-        return entService.getEntBasicById(id);
+    public Ent getEntBasicByUsername(@RequestParam(defaultValue = "") String username){
+        return entService.getEntBasicByUsername(username);
+    }
+
+    @RequestMapping(value = "/basic/ent",method = RequestMethod.PUT)
+    public RespBean updateEnt(Ent ent){
+        if(entService.updateEnt(ent)==1) {
+            return new RespBean("success", "更新成功!");
+        }
+        return new RespBean("error", "更新失败!");
+    }
+
+    @RequestMapping(value = "/all/ent",method = RequestMethod.PUT)
+    public RespBean adminUpdateEnt(Ent ent){
+        if(entService.updateEnt(ent)==1) {
+            return new RespBean("success", "更新成功!");
+        }
+        return new RespBean("error", "更新失败!");
+    }
+
+    @RequestMapping(value = "/all/ent/{ids}",method = RequestMethod.DELETE)
+    public RespBean deleteEntById(@PathVariable String ids){
+        if(entService.deleteEntById(ids)) {
+            return new RespBean("success", "删除成功!");
+        }
+        return new RespBean("error", "删除失败!");
     }
 }

@@ -45,10 +45,86 @@
             order by e.id limit #{start},#{size}
         </if>
     </select>
-    <select id="getCountByKeywords" resultType="Integer">
+    <select id="getCountByKeywords" resultType="int">
         select count(*) from enterprise e where e.`id`!=1 and e.`name` like concat('%',#{keywords},'%')
     </select>
-    <select id="getEntBasicById" resultMap="LoadProjects">
-        select e.* from enterprise e where e.`id`=#{id}
+    <select id="getEntBasicByUsername" resultMap="LoadProjects">
+        select e.* from enterprise e where e.`username`=#{username}
+    </select>
+    <select id="isExistUsername" resultType="int">
+        SELECT EXISTS(SELECT * FROM enterprise e WHERE e.`username`=#{username})
+    </select>
+    <insert id="entSignUp">
+        INSERT INTO enterprise set username=#{username},password=#{password}
+    </insert>
+    <insert id="addRolesForEnt">
+        INSERT INTO e_role(eid,rid) VALUES (#{eid},2)
+    </insert>
+    <update id="updateEnt">
+        update enterprise
+        <set>
+            <if test="ent.name != null">
+                name = #{ent.name,jdbcType=VARCHAR},
+            </if>
+            <if test="ent.code != null">
+                credit_code = #{ent.code,jdbcType=VARCHAR},
+            </if>
+            <if test="ent.password != null">
+                password = #{ent.password,jdbcType=VARCHAR},
+            </if>
+            <if test="ent.rep != null">
+                representative = #{ent.rep,jdbcType=VARCHAR},
+            </if>
+            <if test="ent.phone != null">
+                phone = #{ent.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="ent.nature != null">
+                nature = #{ent.nature,jdbcType=VARCHAR},
+            </if>
+            <if test="ent.pos != null">
+                position = #{ent.pos,jdbcType=VARCHAR},
+            </if>
+            <if test="ent.address != null">
+                address = #{ent.address,jdbcType=VARCHAR},
+            </if>
+            <if test="ent.scope != null">
+                scope = #{ent.scope,jdbcType=VARCHAR},
+            </if>
+            <if test="ent.pls != null">
+                pl_situation = #{ent.pls,jdbcType=VARCHAR},
+            </if>
+            <if test="ent.routing != null">
+                routing = #{ent.routing,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{ent.id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteEntById">
+        delete from enterprise where id in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">#{id}</foreach>
+    </delete>
+    <delete id="deleteOpByEid">
+        delete from operation where eid in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">#{id}</foreach>
+    </delete>
+    <delete id="deleteERoleByEid">
+        delete from e_role where eid in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">#{id}</foreach>
+    </delete>
+    <delete id="deleteProbByEid">
+        delete from problem where eid in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">#{id}</foreach>
+    </delete>
+    <delete id="deleteStageByPid">
+        delete from stage where pid in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">#{id}</foreach>
+    </delete>
+    <delete id="deleteProjByEid">
+        delete from project where eid in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">#{id}</foreach>
+    </delete>
+    <select id="getPidByEid" resultType="java.lang.String">
+        select p.id from project p where eid in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">#{id}</foreach>
     </select>
 </mapper>

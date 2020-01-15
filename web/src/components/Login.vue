@@ -8,25 +8,40 @@
     <el-form-item prop="checkPass">
       <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
     </el-form-item>
-    <el-checkbox class="login_remember" v-model="checked" label-position="left">记住密码</el-checkbox>
+    <!--<el-checkbox class="login_remember" v-model="checked" label-position="left">记住密码</el-checkbox>-->
     <el-form-item style="width: 100%">
       <el-button type="primary" @click.native.prevent="submitClick" style="width: 100%">登录</el-button>
     </el-form-item>
+    <p style="text-align: right">
+       <router-link class="login_reg" to="#">忘记密码</router-link>
+       <router-link class="login_reg" to="/signup">企业注册</router-link>
+    </p>
   </el-form>
 </template>
 
 <script>
   export default{
     data(){
+      var validatePass = (rule, value, callback) => {
+        if (this.loginForm.password === '') {
+          callback(new Error('请输入密码'));
+        } else callback();
+      };
+      var validateName = (rule, value, callback) => {
+        if (this.loginForm.username === '') {
+          callback(new Error('请输入用户名'));
+         } else callback();
+      };
+
       return {
         rules: {
-          account: [{required: true, message: '请输入用户名', trigger: 'blur'}],
-          checkPass: [{required: true, message: '请输入密码', trigger: 'blur'}]
+          account: [{ validator: validateName, trigger: 'blur' }],
+          checkPass: [{ validator: validatePass, trigger: 'blur' }]
         },
         checked: true,
         loginForm: {
-          username: 'admin',
-          password: 'admin'
+          username: '',
+          password: ''
         },
         loading: false
       }
@@ -40,11 +55,11 @@
           password: this.loginForm.password
         }).then(resp=> {
           _this.loading = false;
-          if (resp && resp.status == 200) {
+          if (resp && resp.status === 200) {
             var data = resp.data;
             _this.$store.commit('login', data.msg);
             var path = _this.$route.query.redirect;
-            _this.$router.replace({path: path == '/' || path == undefined ? '/home' : path});
+            _this.$router.replace({path: path === '/' || path === undefined ? '/home' : path});
           }
         });
       }
@@ -73,5 +88,12 @@
   .login_remember {
     margin: 0px 0px 35px 0px;
     text-align: left;
+  }
+
+  .login_reg {
+      text-decoration: none;
+      color:#999999;
+      font-size: 12px;
+      margin-left: 8px;
   }
 </style>

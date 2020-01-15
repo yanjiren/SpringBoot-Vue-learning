@@ -2,7 +2,7 @@ package org.server.config;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-//密码不加密
+//不加密
 public class MyPasswordEncoder implements PasswordEncoder {
     @Override
     public String encode(CharSequence charSequence) {

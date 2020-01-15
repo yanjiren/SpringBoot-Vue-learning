@@ -6,12 +6,16 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import store from './store'
+import axios from 'axios'
 import {getRequest} from './utils/api'
 import {postRequest} from './utils/api'
 import {deleteRequest} from './utils/api'
 import {putRequest} from './utils/api'
 import 'font-awesome/css/font-awesome.min.css'
 import {initMenu} from "./utils/initmenu";
+import {isExistUsername} from "./utils/signup";
+import {entSignup} from "./utils/signup";
+
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
@@ -20,7 +24,8 @@ Vue.prototype.getRequest = getRequest;
 Vue.prototype.postRequest = postRequest;
 Vue.prototype.deleteRequest = deleteRequest;
 Vue.prototype.putRequest = putRequest;
-
+Vue.prototype.entSignup = entSignup;
+Vue.prototype.isExistUsername = isExistUsername;
 /* eslint-disable no-new */
 
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.server.mapper.OperationMapper">
+    <resultMap id="BaseResultMap" type="org.server.bean.Operation">
+        <id column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="product_output" property="productOutput"/>
+        <result column="output_value" property="outputValue"/>
+        <result column="tax" property="tax"/>
+        <result column="energy_used" property="energyUsed"/>
+        <result column="report_date" property="reportDate"/>
+    </resultMap>
+
+    <select id="getOperationByDate" resultMap="BaseResultMap">
+        select * from operation o where eid=#{eid}
+        <if test="startDate!=null and startDate!=''">
+            <![CDATA[   and DATE_FORMAT(report_date, '%Y-%m-%d')>=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')   ]]>
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            <![CDATA[  and DATE_FORMAT(report_date, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+        </if>
+        order by report_date;
+    </select>
+
+    <insert id="addOperation" parameterType="org.server.bean.Operation">
+        insert into operation (eid,product_output,output_value,tax,energy_used,report_date)
+        values (#{operation.eid,jdbcType=INTEGER},#{operation.productOutput,jdbcType=INTEGER},#{operation.outputValue,jdbcType=INTEGER},
+                #{operation.tax,jdbcType=INTEGER},#{operation.energyUsed,jdbcType=INTEGER},#{operation.reportDate,jdbcType=DATE})
+    </insert>
+
+    <!--<update id="updateOperation">
+        update operation
+        <set>
+            <if test="operation.productOutput!=null">
+                product_output=#{operation.productOutput,jdbcType=INTEGER}
+            </if>
+            <if test="operation.outputValue!=null">
+                output_value=#{operation.outputValue,jdbcType=INTEGER}
+            </if>
+            <if test="operation.tax=null">
+                tax=#{operation.tax,jdbcType=INTEGER}
+            </if>
+            <if test="operation.energyUsed!=null">
+                energy_used=#{operation.energyUsed,jdbcType=INTEGER}
+            </if>
+            <if test="operation.reportDate!=null">
+                report_date=#{operation.reportDate,jdbcType=DATE}
+            </if>
+        </set>
+    </update>-->
+</mapper>

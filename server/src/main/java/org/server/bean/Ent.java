@@ -28,6 +28,9 @@ public class Ent implements UserDetails {
     private List<Role> roles;
     private List<Project> projects;
 
+    public Ent() {
+    }
+
     public List<Project> getProjects() {
         return projects;
     }

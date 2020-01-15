@@ -4,16 +4,18 @@
       <el-header class="home_header">
         <span class="home_title">重点企业和项目综合服务调度平台</span>
         <div style="display: flex;align-items: center;margin-right: 7px">
-          <el-dropdown @command="handleCommand">
-  <span class="el-dropdown-link home_userinfo" style="display: flex;align-items: center">
-    {{user.name}} <i><img src="" style="width: 40px;height: 40px;margin-right: 5px;margin-left: 5px;border-radius: 40px"/></i>
-  </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>企业中心</el-dropdown-item>
-              <el-dropdown-item>设置</el-dropdown-item>
-              <el-dropdown-item command="logout" divided>注销</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+          <span style="display: flex;align-items: center;color: #ffffff;">
+            {{user.name}} </span>
+          <span class="el-dropdown-link" style="cursor: pointer;" >
+            <el-dropdown @command="handleCommand">
+              <el-avatar icon="el-icon-user-solid" size="medium" style="margin-left: 10px;margin-right: 20px"></el-avatar>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>用户中心</el-dropdown-item>
+                <el-dropdown-item>设置</el-dropdown-item>
+                <el-dropdown-item command="logout" divided>注销</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </span>
         </div>
       </el-header>
       <el-container>
@@ -96,20 +98,19 @@
   .home_container {
     height: 100%;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
   }
 
   .home_header {
-    background-color: #20a0ff;
-    color: #333;
+    background-color: #25a7ff;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: space-between;
     box-sizing: content-box;
-    padding: 0px;
+    padding: 0;
   }
 
   .home_aside {
@@ -117,15 +118,11 @@
   }
 
   .home_title {
-    color: #fff;
+    padding-left: 30px;
+    color: #ffffff;
     font-size: 22px;
     display: inline;
     margin-left: 8px;
-  }
-
-  .home_userinfo {
-    color: #fff;
-    cursor: pointer;
   }
 
 </style>

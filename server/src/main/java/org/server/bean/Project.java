@@ -1,5 +1,7 @@
 package org.server.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Project {
@@ -13,6 +15,30 @@ public class Project {
     private String location;
     private Date startDate;
     private Date endDate;
+    private String entName;
+
+    public Project() {
+    }
+
+    public Project(int eid, String name, String pCode, String principal, int scale, String industry, String location, Date startDate, Date endDate) {
+        this.eid = eid;
+        this.name = name;
+        this.pCode = pCode;
+        this.principal = principal;
+        this.scale = scale;
+        this.industry = industry;
+        this.location = location;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public String getEntName() {
+        return entName;
+    }
+
+    public void setEntName(String entName) {
+        this.entName = entName;
+    }
 
     public int getId() {
         return id;
@@ -78,6 +104,7 @@ public class Project {
         this.location = location;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public Date getStartDate() {
         return startDate;
     }
@@ -86,6 +113,7 @@ public class Project {
         this.startDate = startDate;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public Date getEndDate() {
         return endDate;
     }

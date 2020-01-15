@@ -3,6 +3,7 @@ package org.server.controller;
 import org.server.bean.Ent;
 import org.server.bean.EntUtils;
 import org.server.bean.Menu;
+import org.server.service.EntService;
 import org.server.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ConfigController {
     @Autowired
     MenuService menuService;
+
     @RequestMapping("/sysmenu")
     public List<Menu> sysmenu() {
         return menuService.getMenusByEntId();
@@ -27,4 +29,5 @@ public class ConfigController {
     public Ent currentUser() {
         return EntUtils.getCurrentEnt();
     }
+
 }
