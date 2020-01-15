@@ -49,11 +49,11 @@
         </div>
       </el-main>
     </el-container>
-    <el-form size="small" :model="ent" ref="updateEntForm" style="margin: 0;padding: 0;">
+    <el-form size="small" :model="ent" :rules="rules" ref="updateEntForm" style="margin: 0;padding: 0;">
       <div style="text-align: left">
         <el-dialog
           :title="dialogTitle"
-          style="padding: 0px;"
+          style="padding: 0;"
           :close-on-click-modal="false"
           :visible.sync="dialogVisible"
           width="75%">
@@ -196,7 +196,16 @@
         entPos: [{id:1,name:'市场领导者'},{id:2,name:'市场挑战者'},{id:3,name:'市场追随者'},{id:4,name:'市场补缺者'}],
         tableLoading: false,
         dialogVisible: false,
-        dialogTitle:''
+        dialogTitle:'',
+        rules:{
+          name: [{required: true, message: '请输入企业名称', trigger: 'blur'}],
+          rep:[{required: true, message: '必填', trigger: 'blur'},{ min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }],
+          code:[{required: true, message: '请输入统一信用代码', trigger: 'blur'}],
+          phone:[{required: true, message: '请输入联系方式', trigger: 'blur'}],
+          pos:[{required: true, message: '必填', trigger: 'blur'}],
+          address:[{required: true, message: '请输入通讯地址', trigger: 'blur'}],
+          nature:[{required: true, message: '必填', trigger: 'blur'}]
+        }
       };
     },
     mounted: function () {
